@@ -1,3 +1,4 @@
+package code1;
 public class NNCollection{
     private NameNumber[] nnArray = new NameNumber[100];
     private int free;

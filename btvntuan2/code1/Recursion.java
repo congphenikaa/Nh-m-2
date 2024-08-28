@@ -1,3 +1,4 @@
+package code1;
 public class Recursion {
     class A{int i;}
     public class VarArgs{

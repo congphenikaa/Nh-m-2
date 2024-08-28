@@ -1,3 +1,4 @@
+package code1;
 public class Time{
     int hour;
     int minute;

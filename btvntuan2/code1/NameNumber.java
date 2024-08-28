@@ -1,3 +1,4 @@
+package code1;
 public class NameNumber {
     private String lastName;
     private String telNumber;
