@@ -40,9 +40,7 @@ public String toString(){
         ":" + (second < 10 ? "0" : "") + second +
         (hour < 12 ?"AM":"PM");  
     }
-}
 
-public class TestTime{
     public static void main(String[] args){
         Time t1 = new Time();
         Time t2 = new Time(20, 3, 45);
