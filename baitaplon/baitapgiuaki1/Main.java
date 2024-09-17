@@ -15,7 +15,7 @@ class DiscreteSignal implements Signal {
 }
 
 
-class ContinuousSignal implements Signal {
+class ContinuousSignal implements Signal {   
     
     public void emitSignal() {
         System.out.println("Continuous Signal Emitted!");
