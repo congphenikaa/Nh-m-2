@@ -1,6 +1,7 @@
 # Final project: Xây dựng ứng dụng quản lí sinh viên
 # Thành viên nhóm
 * Nguyễn Hữu Công - Mã số sinh viên: 22010399
+* Trần Đỗ Quốc Huy - Mã số sinh viên: 21011607
 # Mô tả dự án
 ## Dự án của chúng ta sẽ tập trung vào việc xây dựng một ứng dụng quản lý thông tin sinh viên. Dưới đây là các chức năng chính của ứng dụng:
 
