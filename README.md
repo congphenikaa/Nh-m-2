@@ -15,13 +15,13 @@
 4. Nhập điểm cho sinh viên:
 * Nhập điểm môn học: Cho phép người quản trị nhập điểm cho các môn học mà sinh viên đã tham gia.
 # Các UML dự án
-1.1 UML component diagram
+## 1.1 UML component diagram
 ![image](https://github.com/user-attachments/assets/5333848e-65af-46aa-8827-81d43d443ec8)
 
-1.2 UML sequence diagram
-1.2.1 : CourseRegistration()
+## 1.2 UML sequence diagram
+## 1.2.1 : CourseRegistration()
 ![image](https://github.com/user-attachments/assets/e3a0f9a2-c96f-42ab-bc3c-bf232f03ae18)
-1.2.2 : CreateStudent()
+## 1.2.2 : CreateStudent()
 ![image](https://github.com/user-attachments/assets/38415fe4-cc5e-4305-8b37-998e6f137160)
 
 
