@@ -14,3 +14,6 @@
 * Đăng ký môn học: Sinh viên có thể đăng ký các môn học mà họ muốn học.
 4. Nhập điểm cho sinh viên:
 * Nhập điểm môn học: Cho phép người quản trị nhập điểm cho các môn học mà sinh viên đã tham gia.
+
+# Hình ảnh trang đăng nhập đầu tiên
+![Screenshot 2024-10-01 072414](https://github.com/user-attachments/assets/67abb215-0f2a-43fe-b2c3-42eac91ca12d)
