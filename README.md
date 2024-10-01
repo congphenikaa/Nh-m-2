@@ -23,6 +23,8 @@
 ![image](https://github.com/user-attachments/assets/e3a0f9a2-c96f-42ab-bc3c-bf232f03ae18)
 ## 1.2.2 : CreateStudent()
 ![image](https://github.com/user-attachments/assets/38415fe4-cc5e-4305-8b37-998e6f137160)
+## 1.2.3 : EnterScore()
+![image](https://github.com/user-attachments/assets/b6f3c8e2-b8f7-41e9-b468-edf10d4f6744)
 
 
 # Hình ảnh trang đăng nhập đầu tiên
