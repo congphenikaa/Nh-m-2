@@ -1,4 +1,4 @@
-package code;
+package javafx;
 
 public class LoginErrorHandling {
 
