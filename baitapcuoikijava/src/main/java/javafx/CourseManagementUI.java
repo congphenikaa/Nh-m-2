@@ -1,5 +1,7 @@
 package javafx;
 
+import java.util.ArrayList;
+import java.util.List;
 import application.Course;
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -19,12 +21,16 @@ public class CourseManagementUI extends Application {
 
     private TableView<Course> table;
     private ObservableList<Course> courseList;
+    private CourseController courseController;
 
     @Override
     public void start(Stage primaryStage) {
-        // Tạo bảng và các cột
+        // Initialize CourseController
+        courseController = new CourseController();
+        
+        // Create table and columns
         table = new TableView<>();
-
+        
         TableColumn<Course, String> idColumn = new TableColumn<>("Course ID");
         idColumn.setMinWidth(100);
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCourseID()));
@@ -40,10 +46,7 @@ public class CourseManagementUI extends Application {
         table.getColumns().addAll(idColumn, nameColumn, creditsColumn);
 
         // Danh sách khóa học ban đầu
-        courseList = FXCollections.observableArrayList(
-                new Course("C001", "Mathematics", 3),
-                new Course("C002", "Physics", 4)
-        );
+        courseList = FXCollections.observableArrayList(courseController.ListCourses());
         table.setItems(courseList);
 
         // Các trường nhập liệu
@@ -81,8 +84,9 @@ public class CourseManagementUI extends Application {
             String courseName = nameInput.getText();
             int creditScores = Integer.parseInt(creditsInput.getText());
 
-            Course newCourse = new Course(courseID, courseName, creditScores);
-            courseList.add(newCourse);
+            // Thêm khóa học mới vào CourseController và ObservableList
+            courseController.addCourse(courseID, courseName, creditScores);
+            courseList.setAll(courseController.ListCourses());
 
             idInput.clear();
             nameInput.clear();
@@ -93,17 +97,25 @@ public class CourseManagementUI extends Application {
         editButton.setOnAction(e -> {
             Course selectedCourse = table.getSelectionModel().getSelectedItem();
             if (selectedCourse != null) {
-                selectedCourse.setCourseID(idInput.getText());
-                selectedCourse.setCourseName(nameInput.getText());
-                selectedCourse.setCreditScores(Integer.parseInt(creditsInput.getText()));
-                table.refresh(); // Làm mới bảng sau khi chỉnh sửa
+                String courseID = idInput.getText();
+                String courseName = nameInput.getText();
+                int creditScores = Integer.parseInt(creditsInput.getText());
+
+                // Cập nhật khóa học trong CourseController
+                courseController.updateCourse(courseID, courseName, creditScores);
+                courseList.setAll(courseController.ListCourses());
+                table.refresh();
             }
         });
 
         // Hành động khi nhấn nút xóa
         deleteButton.setOnAction(e -> {
             Course selectedCourse = table.getSelectionModel().getSelectedItem();
-            courseList.remove(selectedCourse);
+            if (selectedCourse != null) {
+                // Xóa khóa học khỏi CourseController và ObservableList
+                courseController.deleteCourse(selectedCourse.getCourseID());
+                courseList.setAll(courseController.ListCourses());
+            }
         });
 
         // Bố cục cho các trường nhập liệu
@@ -140,5 +152,42 @@ public class CourseManagementUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+}
+
+// CourseController class
+class CourseController {
+    private List<Course> courses;
+
+    // Constructor
+    public CourseController() {
+        this.courses = new ArrayList<>();
+    }
+
+    // Thêm khóa học
+    public void addCourse(String courseID, String courseName, int creditScores) {
+        Course newCourse = new Course(courseID, courseName, creditScores);
+        courses.add(newCourse);
+    }
+
+    // Sửa thông tin khóa học
+    public void updateCourse(String courseID, String courseName, int creditScores) {
+        for (Course course : courses) {
+            if (course.getCourseID().equals(courseID)) {
+                course.setCourseName(courseName);
+                course.setCreditScores(creditScores);
+                break;
+            }
+        }
+    }
+
+    // Xóa khóa học
+    public void deleteCourse(String courseID) {
+        courses.removeIf(course -> course.getCourseID().equals(courseID));
+    }
+
+    // Liệt kê các khóa học
+    public List<Course> ListCourses() {
+        return courses;
     }
 }
