@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import application.Student;
+import java.io.*;
+import java.util.List;
 
 public class StudentManager extends Application {
     private TableView<Student> table;
@@ -101,6 +103,16 @@ public class StudentManager extends Application {
         Scene scene = new Scene(layout, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+     // Load existing students from the file at startup
+        loadStudentsFromFile();
+        
+        primaryStage.setTitle("Student Management");
+        
+        // Other setup code remains unchanged...
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
  // Add student method with date format validation
@@ -108,7 +120,7 @@ public class StudentManager extends Application {
         try {
             long id = Long.parseLong(idInput.getText());
             String name = nameInput.getText();
-            LocalDate dob = dateOfBirthInput.getValue(); // Lấy giá trị trực tiếp từ DatePicker
+            LocalDate dob = dateOfBirthInput.getValue();
             String place = placeOfBirthInput.getText();
 
             if (name.isEmpty() || dob == null || place.isEmpty()) {
@@ -118,13 +130,15 @@ public class StudentManager extends Application {
 
             Student student = new Student(id, name, dob, place);
             students.add(student);
+
+            // Save to file after adding
+            saveStudentsToFile();
             clearFields();
         } catch (NumberFormatException e) {
             showAlert("Invalid Student ID format. Please enter a valid number.");
-        } catch (DateTimeParseException e) {
-            showAlert("Invalid Date of Birth format. Please enter the date in dd/MM/yyyy format.");
         }
     }
+
 
 
     // Validate date format
@@ -147,12 +161,16 @@ public class StudentManager extends Application {
             selectedStudent.setFullName(nameInput.getText());
             selectedStudent.setDateOfBirth(dateOfBirthInput.getValue());
             selectedStudent.setPlaceOfBirth(placeOfBirthInput.getText());
+
+            // Save to file after editing
+            saveStudentsToFile();
             table.refresh();
             clearFields();
         } catch (NumberFormatException e) {
             showAlert("Invalid Student ID format. Please enter a valid number.");
         }
     }
+
 
     // Delete selected student
     private void deleteStudent() {
@@ -163,8 +181,12 @@ public class StudentManager extends Application {
         }
 
         students.remove(selectedStudent);
+
+        // Save to file after deletion
+        saveStudentsToFile();
         clearFields();
     }
+
 
     // Clear input fields
     private void clearFields() {
@@ -181,5 +203,43 @@ public class StudentManager extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    private static final String FILE_PATH = "students.csv";
+
+    // Method to save students to a CSV file
+    private void saveStudentsToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            for (Student student : students) {
+                writer.write(student.getStudentId() + "," +
+                             student.getFullName() + "," +
+                             student.getDateOfBirth() + "," +
+                             student.getPlaceOfBirth());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            showAlert("Error saving students to file.");
+        }
+    }
+
+    // Method to load students from a CSV file
+    private void loadStudentsFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] fields = line.split(",");
+                long id = Long.parseLong(fields[0]);
+                String name = fields[1];
+                LocalDate dob = LocalDate.parse(fields[2]);
+                String place = fields[3];
+                
+                Student student = new Student(id, name, dob, place);
+                students.add(student);
+            }
+        } catch (FileNotFoundException e) {
+            // No file yet, ignore
+        } catch (IOException e) {
+            showAlert("Error loading students from file.");
+        }
     }
 }
