@@ -12,9 +12,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javafx.StudentManager;
+
 public class MainProgram extends Application {
 
     private Stage primaryStage; // Store the primary stage for navigation
+    private Scene mainMenuScene;
 
     @Override
     public void start(Stage primaryStage) {
@@ -32,6 +35,7 @@ public class MainProgram extends Application {
         Button courseRegistrationButton = createStyledButton("Course Registration");
         Button gradeManagementButton = createStyledButton("Enter/Update Grades");
         Button logoutButton = createStyledButton("Logout"); // Logout button
+        Button studentManagerButton = new Button("Go to Student Manager");
 
         // Adding action for each button
         studentManagementButton.setOnAction(e -> openStudentManagement());
@@ -39,12 +43,13 @@ public class MainProgram extends Application {
         courseRegistrationButton.setOnAction(e -> openCourseRegistration());
         gradeManagementButton.setOnAction(e -> openGradeManagement());
         logoutButton.setOnAction(e -> logout()); // Action for logout
+        
 
         // Button layout
         VBox buttonLayout = new VBox(15); // Spacing between buttons
         buttonLayout.setAlignment(Pos.CENTER);
         buttonLayout.getChildren().addAll(studentManagementButton, courseManagementButton,
-                courseRegistrationButton, gradeManagementButton, logoutButton);
+                courseRegistrationButton, gradeManagementButton, logoutButton, studentManagerButton);
 
         // Main layout
         BorderPane borderPane = new BorderPane();
@@ -79,7 +84,8 @@ public class MainProgram extends Application {
     // Placeholder methods for each functionality
     private void openStudentManagement() {
         System.out.println("Navigating to Student Management...");
-        // Add code to navigate to the Student Management screen
+        StudentManager studentManager = new StudentManager(primaryStage); // Create a new StudentManager instance
+        studentManager.show(); // Show the student management screen
     }
 
     private void openCourseManagement() {

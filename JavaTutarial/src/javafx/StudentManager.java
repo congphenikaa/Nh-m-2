@@ -23,27 +23,35 @@ public class StudentManager extends Application {
     private TextField idInput, nameInput, placeOfBirthInput;
     private DatePicker dateOfBirthInput;
     private ObservableList<Student> students;
+	private Stage primaryStage;
+    
+	// Constructor to accept the primary stage
+    public StudentManager(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        students = FXCollections.observableArrayList();
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) {
+    
+ // Method to show the Student Manager page
+    public void show() {
         primaryStage.setTitle("Student Management");
 
         // Student ID input
         idInput = new TextField();
         idInput.setPromptText("Student ID");
-        
+
         // Full Name input
         nameInput = new TextField();
         nameInput.setPromptText("Full Name");
-        
+
         // Date of Birth input
         dateOfBirthInput = new DatePicker();
         dateOfBirthInput.setPromptText("Date of Birth");
-        
+
         // Place of Birth input
         placeOfBirthInput = new TextField();
         placeOfBirthInput.setPromptText("Place of Birth");
@@ -68,34 +76,27 @@ public class StudentManager extends Application {
         // Table setup
         table = new TableView<>();
         table.getColumns().addAll(idColumn, nameColumn, dateOfBirthColumn, placeOfBirthColumn);
-        
-        // Observable list for students
-        students = FXCollections.observableArrayList();
         table.setItems(students);
 
-        // Add button
+        // Buttons
         Button addButton = new Button("Add");
         addButton.setOnAction(e -> addStudent());
 
-        // Edit button
         Button editButton = new Button("Edit");
         editButton.setOnAction(e -> editStudent());
 
-        // Delete button
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(e -> deleteStudent());
+        
 
-        // Layout for buttons
         HBox buttonLayout = new HBox(10);
         buttonLayout.setPadding(new Insets(10, 10, 10, 10));
         buttonLayout.getChildren().addAll(addButton, editButton, deleteButton);
 
-        // Layout for inputs
         HBox inputLayout = new HBox(10);
         inputLayout.setPadding(new Insets(10, 10, 10, 10));
         inputLayout.getChildren().addAll(idInput, nameInput, dateOfBirthInput, placeOfBirthInput);
 
-        // Main layout
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10, 10, 10, 10));
         layout.getChildren().addAll(table, inputLayout, buttonLayout);
@@ -103,16 +104,8 @@ public class StudentManager extends Application {
         Scene scene = new Scene(layout, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
-        
-     // Load existing students from the file at startup
-        loadStudentsFromFile();
-        
-        primaryStage.setTitle("Student Management");
-        
-        // Other setup code remains unchanged...
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        loadStudentsFromFile(); // Load existing students
     }
 
  // Add student method with date format validation
@@ -242,4 +235,10 @@ public class StudentManager extends Application {
             showAlert("Error loading students from file.");
         }
     }
+
+	@Override
+	public void start(Stage arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
