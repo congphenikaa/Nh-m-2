@@ -14,15 +14,21 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.List;
 
 public class CourseManager extends Application {
 
     private TableView<Course> table;
     private ObservableList<Course> courseList;
     private TextField idInput, nameInput, creditsInput;
+    private Scene previousScene;  // Store the previous scene
+    private Stage primaryStage;   // Store the primary stage
 
     private static final String FILE_PATH = "courses.csv";
+
+    public CourseManager(Stage primaryStage, Scene previousScene) {
+        this.primaryStage = primaryStage;
+        this.previousScene = previousScene;
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -30,6 +36,8 @@ public class CourseManager extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        // You can still launch this directly for testing without passing the stage and previous scene
+        this.primaryStage = primaryStage;
         primaryStage.setTitle("Course Management");
 
         // Initialize course list
@@ -70,10 +78,12 @@ public class CourseManager extends Application {
         Button addButton = new Button("Add");
         Button editButton = new Button("Edit");
         Button deleteButton = new Button("Delete");
+        Button backButton = new Button("Back");  // New Back button
 
         addButton.setOnAction(e -> addCourse());
         editButton.setOnAction(e -> editCourse());
         deleteButton.setOnAction(e -> deleteCourse());
+        backButton.setOnAction(e -> goBack()); // Go back to previous scene
 
         // Layout for input fields
         HBox inputLayout = new HBox(10);
@@ -85,7 +95,7 @@ public class CourseManager extends Application {
         // Layout for buttons
         HBox buttonLayout = new HBox(10);
         buttonLayout.setPadding(new Insets(10));
-        buttonLayout.getChildren().addAll(addButton, editButton, deleteButton);
+        buttonLayout.getChildren().addAll(addButton, editButton, deleteButton, backButton);  // Add back button
 
         VBox mainLayout = new VBox(10);
         mainLayout.getChildren().addAll(table, inputLayout, buttonLayout);
@@ -93,6 +103,11 @@ public class CourseManager extends Application {
         Scene scene = new Scene(mainLayout, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    // Go back to the previous scene (Main Menu)
+    private void goBack() {
+        primaryStage.setScene(previousScene);  // Set the scene to the previous scene
     }
 
     // Method to add a course

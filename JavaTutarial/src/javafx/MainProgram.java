@@ -12,8 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import javafx.StudentManager;
-
 public class MainProgram extends Application {
 
     private Stage primaryStage; // Store the primary stage for navigation
@@ -35,10 +33,9 @@ public class MainProgram extends Application {
         Button courseRegistrationButton = createStyledButton("Course Registration");
         Button gradeManagementButton = createStyledButton("Enter/Update Grades");
         Button logoutButton = createStyledButton("Logout"); // Logout button
-        Button studentManagerButton = new Button("Go to Student Manager");
 
         // Adding action for each button
-        studentManagementButton.setOnAction(e -> openStudentManagement());
+        studentManagementButton.setOnAction(e -> openStudentManager());  // Navigate to Student Management
         courseManagementButton.setOnAction(e -> openCourseManagement());
         courseRegistrationButton.setOnAction(e -> openCourseRegistration());
         gradeManagementButton.setOnAction(e -> openGradeManagement());
@@ -49,7 +46,7 @@ public class MainProgram extends Application {
         VBox buttonLayout = new VBox(15); // Spacing between buttons
         buttonLayout.setAlignment(Pos.CENTER);
         buttonLayout.getChildren().addAll(studentManagementButton, courseManagementButton,
-                courseRegistrationButton, gradeManagementButton, logoutButton, studentManagerButton);
+                courseRegistrationButton, gradeManagementButton, logoutButton);
 
         // Main layout
         BorderPane borderPane = new BorderPane();
@@ -65,6 +62,7 @@ public class MainProgram extends Application {
         Scene scene = new Scene(borderPane, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
 
     // Create a styled button
@@ -81,16 +79,24 @@ public class MainProgram extends Application {
         return button;
     }
 
-    // Placeholder methods for each functionality
-    private void openStudentManagement() {
-        System.out.println("Navigating to Student Management...");
-        StudentManager studentManager = new StudentManager(primaryStage); // Create a new StudentManager instance
-        studentManager.show(); // Show the student management screen
+    // Navigate to Student Management
+    private void openStudentManager() {
+        StudentManager studentManager = new StudentManager();
+        try {
+            studentManager.start(primaryStage, primaryStage.getScene()); // Pass the main scene
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+
     private void openCourseManagement() {
-        System.out.println("Navigating to Course Management...");
-        // Add code to navigate to the Course Management screen
+        CourseManager courseManager = new CourseManager(primaryStage, primaryStage.getScene()); // Pass the main scene
+        try {
+            courseManager.start(primaryStage); // Navigate to Course Management
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void openCourseRegistration() {

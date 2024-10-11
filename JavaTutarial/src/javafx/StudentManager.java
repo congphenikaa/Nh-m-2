@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -11,48 +12,35 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.io.*;
 
 import application.Student;
-import java.io.*;
-import java.util.List;
 
 public class StudentManager extends Application {
     private TableView<Student> table;
     private TextField idInput, nameInput, placeOfBirthInput;
     private DatePicker dateOfBirthInput;
     private ObservableList<Student> students;
-	private Stage primaryStage;
-    
-	// Constructor to accept the primary stage
-    public StudentManager(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+
+    public StudentManager() {
         students = FXCollections.observableArrayList();
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        start(primaryStage, null);  // Call the overloaded method without a previous scene
     }
 
-    
- // Method to show the Student Manager page
-    public void show() {
+    // Overloaded start method that accepts the previous scene
+    public void start(Stage primaryStage, Scene previousScene) {
         primaryStage.setTitle("Student Management");
 
-        // Student ID input
+        // Student input fields
         idInput = new TextField();
         idInput.setPromptText("Student ID");
-
-        // Full Name input
         nameInput = new TextField();
         nameInput.setPromptText("Full Name");
-
-        // Date of Birth input
         dateOfBirthInput = new DatePicker();
-        dateOfBirthInput.setPromptText("Date of Birth");
-
-        // Place of Birth input
         placeOfBirthInput = new TextField();
         placeOfBirthInput.setPromptText("Place of Birth");
 
@@ -87,15 +75,19 @@ public class StudentManager extends Application {
 
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction(e -> deleteStudent());
-        
 
-        HBox buttonLayout = new HBox(10);
-        buttonLayout.setPadding(new Insets(10, 10, 10, 10));
-        buttonLayout.getChildren().addAll(addButton, editButton, deleteButton);
+        // "Back" button to return to the previous scene
+        Button backButton = new Button("Back");
+        backButton.setOnAction(e -> primaryStage.setScene(previousScene));  // Switch back to the previous scene
 
+        // Layouts
         HBox inputLayout = new HBox(10);
         inputLayout.setPadding(new Insets(10, 10, 10, 10));
         inputLayout.getChildren().addAll(idInput, nameInput, dateOfBirthInput, placeOfBirthInput);
+
+        HBox buttonLayout = new HBox(10);
+        buttonLayout.setPadding(new Insets(10, 10, 10, 10));
+        buttonLayout.getChildren().addAll(addButton, editButton, deleteButton, backButton);
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10, 10, 10, 10));
@@ -105,10 +97,10 @@ public class StudentManager extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        loadStudentsFromFile(); // Load existing students
+        loadStudentsFromFile();  // Load students when the scene opens
     }
 
- // Add student method with date format validation
+    // Add student method
     private void addStudent() {
         try {
             long id = Long.parseLong(idInput.getText());
@@ -117,30 +109,20 @@ public class StudentManager extends Application {
             String place = placeOfBirthInput.getText();
 
             if (name.isEmpty() || dob == null || place.isEmpty()) {
-                showAlert("Please fill in all fields with the correct format.");
+                showAlert("Please fill in all fields.");
                 return;
             }
 
             Student student = new Student(id, name, dob, place);
             students.add(student);
-
-            // Save to file after adding
-            saveStudentsToFile();
+            saveStudentsToFile();  // Save changes
             clearFields();
         } catch (NumberFormatException e) {
-            showAlert("Invalid Student ID format. Please enter a valid number.");
+            showAlert("Invalid Student ID format.");
         }
     }
 
-
-
-    // Validate date format
-    private LocalDate validateDateFormat(String dateInput) throws DateTimeParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(dateInput, formatter);
-    }
-
-    // Edit selected student
+    // Edit student method
     private void editStudent() {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
         if (selectedStudent == null) {
@@ -154,18 +136,15 @@ public class StudentManager extends Application {
             selectedStudent.setFullName(nameInput.getText());
             selectedStudent.setDateOfBirth(dateOfBirthInput.getValue());
             selectedStudent.setPlaceOfBirth(placeOfBirthInput.getText());
-
-            // Save to file after editing
-            saveStudentsToFile();
+            saveStudentsToFile();  // Save changes
             table.refresh();
             clearFields();
         } catch (NumberFormatException e) {
-            showAlert("Invalid Student ID format. Please enter a valid number.");
+            showAlert("Invalid Student ID format.");
         }
     }
 
-
-    // Delete selected student
+    // Delete student method
     private void deleteStudent() {
         Student selectedStudent = table.getSelectionModel().getSelectedItem();
         if (selectedStudent == null) {
@@ -174,12 +153,9 @@ public class StudentManager extends Application {
         }
 
         students.remove(selectedStudent);
-
-        // Save to file after deletion
-        saveStudentsToFile();
+        saveStudentsToFile();  // Save changes
         clearFields();
     }
-
 
     // Clear input fields
     private void clearFields() {
@@ -189,7 +165,7 @@ public class StudentManager extends Application {
         placeOfBirthInput.clear();
     }
 
-    // Show alert dialog
+    // Show an alert
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -197,10 +173,10 @@ public class StudentManager extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
+    // File handling (same as your original code)
     private static final String FILE_PATH = "students.csv";
 
-    // Method to save students to a CSV file
     private void saveStudentsToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
             for (Student student : students) {
@@ -215,7 +191,6 @@ public class StudentManager extends Application {
         }
     }
 
-    // Method to load students from a CSV file
     private void loadStudentsFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
             String line;
@@ -225,20 +200,13 @@ public class StudentManager extends Application {
                 String name = fields[1];
                 LocalDate dob = LocalDate.parse(fields[2]);
                 String place = fields[3];
-                
                 Student student = new Student(id, name, dob, place);
                 students.add(student);
             }
         } catch (FileNotFoundException e) {
-            // No file yet, ignore
+            // File not found, no students to load
         } catch (IOException e) {
             showAlert("Error loading students from file.");
         }
     }
-
-	@Override
-	public void start(Stage arg0) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 }
