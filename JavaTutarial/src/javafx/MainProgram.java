@@ -100,9 +100,19 @@ public class MainProgram extends Application {
     }
 
     private void openCourseRegistration() {
-        System.out.println("Navigating to Course Registration...");
-        // Add code to navigate to the Course Registration screen
+
+        // Pass the current scene to CourseRegistrationManager
+        CourseRegistrationManager courseRegistrationManager = new CourseRegistrationManager(primaryStage.getScene());
+
+        try {
+            // Launch the Course Registration page
+            courseRegistrationManager.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
 
     private void openGradeManagement() {
         System.out.println("Navigating to Grade Management...");
