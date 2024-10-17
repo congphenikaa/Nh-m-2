@@ -93,7 +93,6 @@ public class LoginPage {
             if (username.isEmpty() || password.isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Login Error", "Please fill in all fields.");
             } else if (users.containsKey(username) && users.get(username).equals(password)) {
-                showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome " + username + "!");
                 // Switch to the main program after a successful login
                 goToMainProgram(stage);
             } else {
@@ -120,7 +119,6 @@ public class LoginPage {
             } else {
                 // Successful registration
                 users.put(username, password);
-                showAlert(Alert.AlertType.INFORMATION, "Registration Successful", "You can now log in with your credentials.");
                 // Switch back to login page after registration
                 showLoginPage(stage);
             }
