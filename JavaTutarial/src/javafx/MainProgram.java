@@ -11,6 +11,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 
 public class MainProgram extends Application {
 
@@ -112,11 +115,16 @@ public class MainProgram extends Application {
 			e.printStackTrace();
 		}
 	}
-
+	
 	private void openGradeManagement() {
-		System.out.println("Navigating to Grade Management...");
-		// Add code to navigate to the Grade Management screen
+	    Alert alert = new Alert(AlertType.INFORMATION);
+	    alert.setTitle("Thông báo");
+	    alert.setHeaderText(null);
+	    alert.setContentText("Function under development");
+	    alert.showAndWait();
 	}
+
+
 
 	// Logout method to return to the login page
 	private void logout() {

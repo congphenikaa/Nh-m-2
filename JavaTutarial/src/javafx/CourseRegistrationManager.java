@@ -36,7 +36,7 @@ public class CourseRegistrationManager extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		primaryStage.setTitle("Quản lý Đăng ký Môn học");
+		primaryStage.setTitle("Course Registration");
 
 		// Khởi tạo danh sách dữ liệu
 		studentList = FXCollections.observableArrayList();
@@ -49,10 +49,10 @@ public class CourseRegistrationManager extends Application {
 
 		// Cấu hình bảng sinh viên
 		studentTable = new TableView<>(studentList);
-		TableColumn<Student, Long> studentIdCol = new TableColumn<>("Mã SV");
+		TableColumn<Student, Long> studentIdCol = new TableColumn<>("Student ID");
 		studentIdCol.setCellValueFactory(
 				data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getStudentId()));
-		TableColumn<Student, String> studentNameCol = new TableColumn<>("Họ và Tên");
+		TableColumn<Student, String> studentNameCol = new TableColumn<>("Full Name");
 		studentNameCol.setCellValueFactory(
 				data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getFullName()));
 		studentTable.getColumns().addAll(studentIdCol, studentNameCol);
@@ -63,32 +63,32 @@ public class CourseRegistrationManager extends Application {
 
 		// Cấu hình bảng môn học
 		courseTable = new TableView<>(courseList);
-		TableColumn<Course, String> courseIdCol = new TableColumn<>("Mã MH");
+		TableColumn<Course, String> courseIdCol = new TableColumn<>("Course ID");
 		courseIdCol.setCellValueFactory(
 				data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCourseID()));
-		TableColumn<Course, String> courseNameCol = new TableColumn<>("Tên Môn Học");
+		TableColumn<Course, String> courseNameCol = new TableColumn<>("Course Name");
 		courseNameCol.setCellValueFactory(
 				data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCourseName()));
 		courseTable.getColumns().addAll(courseIdCol, courseNameCol);
 
 		// Cấu hình bảng môn học đã đăng ký
 		registeredCourseTable = new TableView<>(registeredCourses);
-		TableColumn<Course, String> regCourseIdCol = new TableColumn<>("Mã MH");
+		TableColumn<Course, String> regCourseIdCol = new TableColumn<>("Course ID");
 		regCourseIdCol.setCellValueFactory(
 				data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCourseID()));
-		TableColumn<Course, String> regCourseNameCol = new TableColumn<>("Tên Môn Học");
+		TableColumn<Course, String> regCourseNameCol = new TableColumn<>("Course Name");
 		regCourseNameCol.setCellValueFactory(
 				data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCourseName()));
 		registeredCourseTable.getColumns().addAll(regCourseIdCol, regCourseNameCol);
 
 		// Khởi tạo label tổng số tín chỉ
-		totalCreditsLabel = new Label("Tổng số tín chỉ: 0");
+		totalCreditsLabel = new Label("Total credits: 0");
 
 		// Các nút chức năng
-		Button registerButton = new Button("Đăng ký");
+		Button registerButton = new Button("Register");
 		registerButton.setOnAction(e -> registerCourse());
 
-		Button removeRegistrationButton = new Button("Hủy đăng ký");
+		Button removeRegistrationButton = new Button("Unsubscribe");
 		removeRegistrationButton.setOnAction(e -> removeRegistration());
 
 		// Nút quay lại
