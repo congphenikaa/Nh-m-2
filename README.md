@@ -28,7 +28,7 @@
 
 
 # Hình ảnh trang đăng nhập đầu tiên
-![Screenshot 2024-10-01 072414](https://github.com/user-attachments/assets/67abb215-0f2a-43fe-b2c3-42eac91ca12d)
+![image](https://github.com/user-attachments/assets/e96ec465-2bc4-41b6-8bfd-f2ce19e40d59)
 
 ## Demo chương trình
 [DEMO](https://youtu.be/ftZkDJjYcw0)
